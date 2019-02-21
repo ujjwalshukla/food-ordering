@@ -1,0 +1,35 @@
+.App {
+  text-align: center;
+}
+
+.main-page {
+  /*display: flex;*/
+  /*flex: 1;*/
+  /*flex-direc!**!tion: column;*/
+  /*height: 100vh;*/
+}
+
+.top-section {
+  display: block;
+  /*flex: 1;*/
+  justify-content: center;
+  align-items: center;
+  background: rgb(236, 236, 236);
+  padding: 10px;
+}
+.top-section span {
+  padding: 0 10px 0;
+  display: inline-block;
+}
+
+.bottom-section {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  background: rgb(255, 255, 255);
+}
+
+.top-section button {
+  height: 20%;
+  width: 20%;
+}
