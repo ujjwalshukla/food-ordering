@@ -8,52 +8,48 @@ import AuthHelperMethods from './../auth/AuthHelperMethods';
 //Our higher order component
 import withAuth from './../auth/withAuth';
 
+const API = "/api/restaurant"
 class RestaurantList extends Component {
 
-  state = {
-    username: ''
-  };
-  /* Create a new instance of the 'AuthHelperMethods' compoenent*/
-  Auth = new AuthHelperMethods();
-
-  _handleLogout = () => {
-    this.Auth.logout();
-    this.props.history.replace('/login');
-  };
-
-  componentWillMount() {
-
+  constructor(props) {
+    super(props);
+    this.state = {
+      list: []
+    };
+    this.authHelperMethods = new AuthHelperMethods();
   }
-  //Render the protected component
-  render() {
-    let name = null;
-    if (this.props.confirm) {
-      name = this.props.confirm.username;
+
+
+  componentWillMount = async () => {
+    try {
+      this.authHelperMethods.fetch(API)
+        .then(data => this.setState({ list: data }));
+    } catch (e) {
+
     }
-    //let name = this.props.confirm.username;
-    console.log("Rendering Appjs!")
+  };
+
+  render() {
+    const { list } = this.state;
     return (
-
-      <div className="App">
-        <div className="App">
-          <div className="main-page">
-            <header className="top-section">
-              <div>
-                <span>Welcome, {name}</span>
-                <button onClick={this._handleLogout}>LOGOUT</button>
-              </div>
-            </header>
-            <div className="bottom-section">
-
-            </div>
+        <div>
+          <div>
+            restaurant list
           </div>
+          <ul>
+            {list.map(restaurant =>
+              <li key={restaurant.id}>
+                <a href={'restaurant/' + restaurant.id}>{restaurant.name}</a>
+              </li>
+            )}
+          </ul>
         </div>
-      </div>
+
     );
   }
 }
 
 //In order for this component to be protected, we must wrap it with what we call a 'Higher Order Component' or HOC.
 
-export default withAuth(RestaurantList);
+export default RestaurantList;
 

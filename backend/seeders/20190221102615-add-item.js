@@ -17,6 +17,21 @@ module.exports = {
         name: 'dish3',
         cost: 30,
         RestaurantId: 2
+      }, {
+        id:4,
+        name: 'dish4',
+        cost: 40,
+        RestaurantId: 2
+      }, {
+        id:5,
+        name: 'dish5',
+        cost: 30,
+        RestaurantId: 2
+      }, {
+        id:6,
+        name: 'dish6',
+        cost: 30,
+        RestaurantId: 2
       }], {});
   },
 

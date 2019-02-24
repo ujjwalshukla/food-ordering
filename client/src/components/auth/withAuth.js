@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import AuthHelperMethods from './AuthHelperMethods';
+import {
+  Redirect,
+} from "react-router-dom";
 
 /* A higher order component is frequently written as a function that returns a class. */
 export default function withAuth(AuthComponent) {
@@ -16,9 +19,11 @@ export default function withAuth(AuthComponent) {
         /* In the componentDid<ount, we would want to do a couple of important tasks in order to verify the current users authentication status
         prior to granting them enterance into the app. */
         componentWillMount() {
-            console.log(this.props.history);
             if (!Auth.loggedIn()) {
-                this.props.history.push('/login')
+                this.setState({
+                    confirm: false,
+                    loaded: true
+                })
             }
             else {
                 /* Try to get confirmation message from the Auth helper. */
@@ -35,23 +40,29 @@ export default function withAuth(AuthComponent) {
                 catch (err) {
                     console.log(err);
                     Auth.logout();
-                    this.props.history.push('/login');
+                    this.setState({
+                        confirm: false,
+                        loaded: true
+                    })
                 }
             }
         }
 
         render() {
-            if (this.state.loaded == true) {
+            if (this.state.loaded === true) {
                 if (this.state.confirm) {
                     console.log("confirmed!");
                     return (
                         /* component that is currently being wrapper(restaurantList.js) */
-                        <AuthComponent history={this.props.history} confirm={this.state.confirm} />
+                        <AuthComponent history={this.props.history} confirm={this.state.confirm}/>
                     )
                 }
                 else {
                     console.log("not confirmed!");
-                    return null
+                    return <Redirect to={{
+                        pathname: "/login",
+                        state: { from: this.props.location }
+                    }}/>
                 }
             }
             else {

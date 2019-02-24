@@ -11,11 +11,26 @@ var users  = require('./routes/users');
 var auth  = require('./routes/auth');
 var restaurant  = require('./routes/restaurant');
 var orders  = require('./routes/orders');
-
+require('./helper/redis');
 var app = express();
+// var cors = require('cors');
 
 // Requiring our models for syncing
 var db = require("./models");
+
+// app.use(cors({ origin: '*' }));
+// Settings for CORS
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.header('Access-Control-Allow-Origin', '*');
+
+    // Request methods you wish to allow
+    res.header('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Pass to next layer of middleware
+    next();
+});
 
 /*========= Here we want to let the server know that we should expect and allow a header with the content-type of 'Authorization' ============*/
 app.use((req, res, next) => {
@@ -40,21 +55,21 @@ const jwtMW = exjwt({
   secret: 'super secret'
 });
 
-app.use('/auth', auth);
+app.use('/api/auth', auth);
 
 // app.use('/restaurant/:restaurantId/items', restaurantItems);
-app.use('/restaurant', restaurant);
+app.use('/api/restaurant', jwtMW, restaurant);
 
 // app.use('/orders/shared', sharedOrders);
-app.use('/orders', orders);
+app.use('/api/orders', jwtMW, orders);
 
 // app.use('/users', jwtMW, users);
 
 
-app.get('/', jwtMW, (req, res) => {
-  console.log("Web Token Checked.")
-  res.send('You are authenticated'); //Sending some response when authenticated
-});
+// app.get('/', jwtMW, (req, res) => {
+//   console.log("Web Token Checked.");
+//   res.send('You are authenticated'); //Sending some response when authenticated
+// });
 
 
 // catch 404 and forward to error handler

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link, Redirect } from 'react-router-dom';
+import {BrowserRouter as Router, Route, Link, Redirect, Switch} from 'react-router-dom';
 import './App.css';
 
 /* Once the 'Authservice' and 'withAuth' componenets are created, import them into restaurantList.js */
@@ -7,6 +7,10 @@ import AuthHelperMethods from './components/auth/AuthHelperMethods';
 
 //Our higher order component
 import withAuth from './components/auth/withAuth';
+import restaurantList from './components/restaurant/restaurantList';
+import restaurantItemList from './components/restaurant/restaurantItemList';
+import GoToRoot from "./components/auth/goToRoot";
+import OrderDetail from "./components/order/orderDetail";
 
 class App extends Component {
 
@@ -33,22 +37,37 @@ class App extends Component {
     //let name = this.props.confirm.username;
     console.log("Rendering Appjs!")
     return (
-
-      <div className="App">
         <div className="App">
-          <div className="main-page">
-            <header className="top-section">
-              <div>
-                <span>Welcome, {name}</span>
-                <button onClick={this._handleLogout}>LOGOUT</button>
+          <div className="App">
+            <div className="main-page">
+              <div className="top-section">
+                <div>
+                  <span>Welcome, {name}</span>
+                  <button onClick={this._handleLogout}>LOGOUT</button>
+                  <span>
+                    <Link to='/orders'>My Orders</Link>
+                  </span>
+                </div>
               </div>
-            </header>
-            <div className="bottom-section">
 
+              <div>
+
+              </div>
+
+              <div className="bottom-section">
+                <Switch>
+                  <Route path='/restaurant/:restaurantId' component={restaurantItemList} />
+                  {/*<Route exact path='/orders' component={restaurantItemList} />*/}
+                  <Route path='/orders/:orderId' component={OrderDetail} />
+                  <Route path='/share/order/:orderId' component={OrderDetail} />
+                  <Route exact path='/' component={restaurantList} />
+                  <Route component={GoToRoot} />
+                </Switch>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+
     );
   }
 }

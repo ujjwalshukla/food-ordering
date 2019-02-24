@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
 
         // associations can be defined here
         models.Order.hasMany(models.OrderItem);
+        models.Order.belongsTo(models.Restaurant);
         models.Order.belongsTo(models.User, {foreignKey: 'order_owner', targetKey: 'id'});
 
       }

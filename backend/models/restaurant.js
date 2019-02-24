@@ -6,6 +6,7 @@ module.exports = (sequelize, DataTypes) => {
     classMethods: {
       associate: function(models) {
         models.Restaurant.hasMany(models.Item);
+        models.Restaurant.hasMany(models.Order);
       }
     },
     timestamps: false

@@ -8,15 +8,15 @@ var Sequelize = require('sequelize');
  * createTable "Restaurants", deps: []
  * createTable "Users", deps: []
  * createTable "Items", deps: [Restaurants]
- * createTable "Orders", deps: [Users]
+ * createTable "Orders", deps: [Users, Restaurants]
  * createTable "OrderItems", deps: [Items, Orders, Users]
  *
  **/
 
 var info = {
     "revision": 1,
-    "name": "addData",
-    "created": "2019-02-21T13:36:51.463Z",
+    "name": "migrate",
+    "created": "2019-02-23T16:04:24.200Z",
     "comment": ""
 };
 
@@ -131,6 +131,17 @@ var migrationCommands = [{
                     },
                     "allowNull": true,
                     "field": "order_owner"
+                },
+                "RestaurantId": {
+                    "type": Sequelize.INTEGER,
+                    "field": "RestaurantId",
+                    "onUpdate": "CASCADE",
+                    "onDelete": "SET NULL",
+                    "references": {
+                        "model": "Restaurants",
+                        "key": "id"
+                    },
+                    "allowNull": true
                 }
             },
             {}
@@ -150,14 +161,6 @@ var migrationCommands = [{
                 "quantity": {
                     "type": Sequelize.INTEGER,
                     "field": "quantity"
-                },
-                "added_by": {
-                    "type": Sequelize.INTEGER,
-                    "field": "added_by"
-                },
-                "item_added": {
-                    "type": Sequelize.INTEGER,
-                    "field": "item_added"
                 },
                 "ItemId": {
                     "type": Sequelize.INTEGER,

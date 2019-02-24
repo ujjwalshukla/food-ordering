@@ -1,0 +1,22 @@
+.go-to-restaurant {
+    padding: 10px;
+    display: inline-block;
+    float: left;
+}
+
+.share-order {
+    padding: 10px;
+    display: inline-block;
+    float: right;
+}
+
+.new-line {
+    clear: both;
+}
+
+.show {
+    display: block;
+}
+.hide {
+    display: none;
+}

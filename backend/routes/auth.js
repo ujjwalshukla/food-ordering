@@ -2,6 +2,7 @@ var express = require('express');
 var router  = express.Router();
 var bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const redis = require('./../helper/redis');
 
 
 var db = require("./../models");
@@ -16,6 +17,7 @@ router.post('/signup', (req, res) => {
       password: hash
     }).then((result) => {
       console.log("User created: ", result);
+      redis.addUsers(result.id, result.username);
       res.json({
         sucess: true,
         message: "user created!"
@@ -54,7 +56,8 @@ router.post('/log-in', (req, res) => {
 
           let token = jwt.sign(
             {
-              username: user.username
+              username: user.username,
+              userId: user.id
             },
             'super secret',
             { expiresIn: 129600 }); // Signing the token

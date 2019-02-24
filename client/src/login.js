@@ -2,7 +2,10 @@ import React, { Component } from "react";
 
 /* We want to import our 'AuthHelperMethods' component in order to send a login request */
 import AuthHelperMethods from './components/auth/AuthHelperMethods';
-import { Link } from 'react-router-dom';
+import {
+  Link,
+  Redirect,
+} from "react-router-dom";
 import './login.css'
 
 
@@ -14,7 +17,8 @@ class Login extends Component {
 
     state = {
         username: "",
-        password: ""
+        password: "",
+        redirectToReferrer: false
     }
 
     /* Fired off every time the use enters something into the input fields */
@@ -35,20 +39,26 @@ class Login extends Component {
                 if (res === false) {
                     return alert("Sorry those credentials don't exist!");
                 }
-                this.props.history.replace('/');
+                this.setState({ redirectToReferrer: true });
             })
             .catch(err => {
                 alert(err);
             })
     }
 
-    componentWillMount() {
-        /* Here is a great place to redirect someone who is already logged in to the protected route */
-        if (this.Auth.loggedIn())
-            this.props.history.goBack();
-    }
+    // componentWillMount() {
+    //     /* Here is a great place to redirect someone who is already logged in to the protected route */
+    //     if (this.Auth.loggedIn())
+    //         this.props.history.goBack();
+    // }
 
     render() {
+        const { from } = this.props.location.state || { from: { pathname: "/" } };
+        const { redirectToReferrer } = this.state;
+
+         if (redirectToReferrer) {
+          return <Redirect to={from} />;
+        }
         return (
             <React.Fragment>
                 <div className="main-wrapper">

@@ -60,6 +60,17 @@
                     "onDelete": "NO ACTION",
                     "onUpdate": "CASCADE",
                     "seqType": "Sequelize.INTEGER"
+                },
+                "RestaurantId": {
+                    "allowNull": true,
+                    "references": {
+                        "model": "Restaurants",
+                        "key": "id"
+                    },
+                    "onDelete": "SET NULL",
+                    "onUpdate": "CASCADE",
+                    "field": "RestaurantId",
+                    "seqType": "Sequelize.INTEGER"
                 }
             },
             "indexes": []
@@ -75,14 +86,6 @@
                 },
                 "quantity": {
                     "field": "quantity",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "added_by": {
-                    "field": "added_by",
-                    "seqType": "Sequelize.INTEGER"
-                },
-                "item_added": {
-                    "field": "item_added",
                     "seqType": "Sequelize.INTEGER"
                 },
                 "ItemId": {

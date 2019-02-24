@@ -6,10 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    quantity: DataTypes.INTEGER,
-    added_by: DataTypes.INTEGER,
-    item_added: DataTypes.INTEGER
-
+    quantity: DataTypes.INTEGER
   }, {
     classMethods: {
       associate: function(models) {

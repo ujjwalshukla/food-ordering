@@ -7,7 +7,7 @@ export default class AuthHelperMethods {
     login = (username, password) => {
         
         // Get a token from api server using the fetch api
-        return this.fetch(`/auth/log-in`, {
+        return this.fetch(`/api/auth/log-in`, {
             method: 'POST',
             body: JSON.stringify({
                 username,
@@ -69,7 +69,7 @@ export default class AuthHelperMethods {
         const headers = {
             'Accept': 'application/json',
             'Content-Type': 'application/json'
-        }
+        };
         // Setting Authorization header
         // Authorization: Bearer xxxxxxx.xxxxxxxx.xxxxxx
         if (this.loggedIn()) {

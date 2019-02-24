@@ -2,7 +2,7 @@
 
 
 
-```node ./node_modules/sequelize-auto-migrations/bin/makemigration --name  test2```
+```node ./node_modules/sequelize-auto-migrations/bin/makemigration --name migrate```
 
 
 

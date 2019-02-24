@@ -14,6 +14,10 @@ module.exports = {
       }, {
         id:2,
         name: 'Restaurant2',
+      }, {
+          id: 3,
+          name: 'Restaurant3',
+
       }], {});
   },
 
