@@ -55,7 +55,6 @@ class App extends Component {
               <div className="bottom-section">
                 <Switch>
                   <Route path='/restaurant/:restaurantId' component={restaurantItemList} />
-                  {/*<Route exact path='/orders' component={restaurantItemList} />*/}
                   <Route path='/orders/:orderId' component={OrderDetail} />
                   <Route path='/share/order/:orderId' component={OrderDetailShare} />
                   <Route exact path='/' component={restaurantList} />

@@ -15,7 +15,6 @@ router.get('/:orderId', async function(req, res) {
         console.log({ orderDetailForUser, orderStatus, restaurantId});
         data = data.map(function(item){
             item = item.toJSON();
-            // item.quantity = orderDetailForUser[item.id]?parseInt(orderDetailForUser[item.id]):0;
             return item;
         });
         res.json({items: data, orderDetailForUser: orderDetailForUser||{}, orderStatus, restaurantId});
@@ -32,13 +31,6 @@ router.post('/', async function(req, res) {
         let orderItemStatus = await redis.getDetailOfUserItemInOrder(orderId, userId, itemId);
         console.log(orderItemStatus);
         let orderStatus = await redis.getOrderStatus(orderId);
-        console.log({
-            itemId,
-            orderId,
-            userId,
-            quantity: orderItemStatus,
-            orderStatus
-        });
         res.json({
             itemId,
             orderId,

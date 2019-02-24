@@ -4,10 +4,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-const exjwt = require('express-jwt')
+const exjwt = require('express-jwt');
 
-var routes = require('./routes/index');
-var users  = require('./routes/users');
 var auth  = require('./routes/auth');
 var restaurant  = require('./routes/restaurant');
 var orders  = require('./routes/orders');
@@ -58,16 +56,9 @@ const jwtMW = exjwt({
 });
 
 app.use('/api/auth', auth);
-
-// app.use('/restaurant/:restaurantId/items', restaurantItems);
 app.use('/api/restaurant', jwtMW, restaurant);
-
-// app.use('/orders/shared', sharedOrders);
 app.use('/api/orders', jwtMW, orders);
 app.use('/api/share/orders', jwtMW, shareOrder);
-
-// app.use('/users', jwtMW, users);
-
 
 // app.get('/', jwtMW, (req, res) => {
 //   console.log("Web Token Checked.");
