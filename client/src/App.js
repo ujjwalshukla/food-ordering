@@ -11,6 +11,7 @@ import restaurantList from './components/restaurant/restaurantList';
 import restaurantItemList from './components/restaurant/restaurantItemList';
 import GoToRoot from "./components/auth/goToRoot";
 import OrderDetail from "./components/order/orderDetail";
+import OrderDetailShare from "./components/order/orderDetailShare"
 
 class App extends Component {
 
@@ -59,7 +60,7 @@ class App extends Component {
                   <Route path='/restaurant/:restaurantId' component={restaurantItemList} />
                   {/*<Route exact path='/orders' component={restaurantItemList} />*/}
                   <Route path='/orders/:orderId' component={OrderDetail} />
-                  <Route path='/share/order/:orderId' component={OrderDetail} />
+                  <Route path='/share/order/:orderId' component={OrderDetailShare} />
                   <Route exact path='/' component={restaurantList} />
                   <Route component={GoToRoot} />
                 </Switch>

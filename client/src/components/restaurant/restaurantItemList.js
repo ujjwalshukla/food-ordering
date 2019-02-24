@@ -17,7 +17,8 @@ class RestaurantItemList extends Component {
       orderDetail: {},
       orderId: undefined,
       endpoint: "http://localhost:3000",
-      active: false
+      active: false,
+      orderStatus: false
     };
     this.toggleClass = this.toggleClass.bind(this);
     this.authHelperMethods = new AuthHelperMethods();
@@ -32,7 +33,7 @@ class RestaurantItemList extends Component {
       this.authHelperMethods.fetch(API + restaurantId + '/order')
         .then(data => {
           if(data.orderId) {
-            this.setState({ orderId: data.orderId, orderDetail: data.orderDetail});
+            this.setState({ orderId: data.orderId, orderDetail: data.orderDetail, orderStatus: data.orderStatus||false});
             this.subscribeToSocket(data.orderId);
           }
         });
@@ -56,6 +57,9 @@ class RestaurantItemList extends Component {
           this.setState({
             orderDetail
           })
+        });
+        socket.on("order_completed", (data) => {
+          this.setState({orderStatus: data.orderStatus})
         });
       });
     // }
@@ -149,7 +153,7 @@ class RestaurantItemList extends Component {
                     <span>{restaurant.cost}</span>
                   </td>
                   <td>
-                    <button onClick={this.addItem.bind(this, restaurant.id)}>add</button>
+                    <button className={this.state.orderStatus?'hide':'show'} onClick={this.addItem.bind(this, restaurant.id)}>add</button>
                   </td>
                   <td>
                     <span>{this.state.orderDetail[restaurant.id] || 0}</span>

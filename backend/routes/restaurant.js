@@ -1,6 +1,7 @@
 var express = require('express');
 var router  = express.Router();
 var db = require("./../models");
+const redis = require('./../helper/redis');
 const orderController = require("./../controllers/orderController");
 
 router.get('/', function(req, res) {
@@ -23,10 +24,12 @@ router.get('/:restaurantId/order', async function(req, res) {
     console.log(req.params);
     let orderId = await orderController.getCurrentOrderId(userId, restaurantId, false);
     let orderDetail = {};
+    let orderStatus = false;
     if(orderId) {
         orderDetail = await orderController.getOrderDetail(orderId);
+        orderStatus = await redis.getOrderStatus(orderId)
     }
-    res.json({orderId, orderDetail});
+    res.json({orderId, orderDetail, orderStatus});
 });
 
 

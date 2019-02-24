@@ -15,8 +15,10 @@ class OrderDetail extends Component {
       restaurantId: undefined,
       list: [],
       totalCost: 0,
+      status: 0,
       orderDetail: {},
       orderId: undefined,
+      orderStatus: false,
       endpoint: "http://localhost:3000"
     };
     this.authHelperMethods = new AuthHelperMethods();
@@ -31,7 +33,8 @@ class OrderDetail extends Component {
           this.setState({
             orderId: orderId,
             restaurantId: data.restaurantId,
-            list: data.itemDetail
+            list: data.itemDetail,
+            orderStatus: data.orderStatus
           });
           this.subscribeToSocket(this.state.orderId);
           this.calculateTotalCost();
@@ -82,11 +85,23 @@ class OrderDetail extends Component {
         this.setState({list});
         this.calculateTotalCost();
       });
+      socket.on("order_completed", (data) => {
+        this.setState({orderStatus: data.orderStatus})
+      });
     });
   }
 
   completeOrder() {
-    this.authHelperMethods.fetch(ORDER_API + '/' + this.state.orderId + '/complete' )
+    this.authHelperMethods.fetch(ORDER_API + '/complete' , {
+        method: 'POST',
+        body: JSON.stringify({
+          orderId: this.state.orderId
+        })
+      }).then((data) => {
+        this.setState({
+
+        })
+    })
   }
 
   render() {
@@ -129,7 +144,7 @@ class OrderDetail extends Component {
         </div>
         <div>Total Cost: {this.state.totalCost}</div>
         <div>
-          <button onClick={this.completeOrder}>Complete Order</button>
+          <button className={this.state.orderStatus?'hide':'show'} onClick={this.completeOrder.bind(this)}>Complete Order</button>
         </div>
       </div>
     );

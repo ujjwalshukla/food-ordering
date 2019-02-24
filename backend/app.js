@@ -11,6 +11,8 @@ var users  = require('./routes/users');
 var auth  = require('./routes/auth');
 var restaurant  = require('./routes/restaurant');
 var orders  = require('./routes/orders');
+const shareOrder = require('./routes/shareOrders');
+
 require('./helper/redis');
 var app = express();
 // var cors = require('cors');
@@ -62,6 +64,7 @@ app.use('/api/restaurant', jwtMW, restaurant);
 
 // app.use('/orders/shared', sharedOrders);
 app.use('/api/orders', jwtMW, orders);
+app.use('/api/share/orders', jwtMW, shareOrder);
 
 // app.use('/users', jwtMW, users);
 

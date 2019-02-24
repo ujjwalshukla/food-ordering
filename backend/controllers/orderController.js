@@ -52,7 +52,6 @@ const orderController = {
                 itemId,
                 orderId,
                 userId,
-                quantity: await redis.getDetailOfItemInOrder(orderId, itemId),
                 item: await redis.getDetailOfItem(itemId)
             });
             return true;

@@ -65,6 +65,7 @@ router.post('/log-in', (req, res) => {
           res.json({
             sucess: true,
             err: null,
+            userId: user.id,
             token
           });
         }

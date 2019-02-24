@@ -12,8 +12,10 @@ module.exports = {
     addItemToOrder: async (orderId, itemId, count, userId) => {
         console.log(`order_${orderId}`, itemId, count);
         console.log(`item_${orderId}_${itemId}`, userId, count);
+        console.log(`user_item_${orderId}_${userId}`, itemId, count);
         await client.hincrby([`order_${orderId}`, itemId, count]);
         await client.hincrby([`item_${orderId}_${itemId}`, userId, count]);
+        await client.hincrby([`user_item_${orderId}_${userId}`, itemId, count]);
     },
     getListOfItemsInOrder: (orderId) => {
         return client.hgetall(`order_${orderId}`)
@@ -24,12 +26,15 @@ module.exports = {
         if(orderItemCount - count === 0 && orderItemCountForUser - count === 0) {
             await client.hdel(`order_${orderId}`, itemId);
             await client.hdel(`item_${orderId}_${itemId}`, userId);
+            await client.hdel([`user_item_${orderId}_${userId}`, itemId]);
         } else if(orderItemCountForUser - count === 0 && orderItemCount - count > 0 ) {
             await client.hincrby([`order_${orderId}`, itemId, count * -1]);
             await client.hdel(`item_${orderId}_${itemId}`, userId);
+            await client.hdel([`user_item_${orderId}_${userId}`, itemId]);
         } else if(orderItemCount - count > 0 && orderItemCountForUser - count > 0) {
             await client.hincrby([`order_${orderId}`, itemId, count]);
             await client.hincrby([`item_${orderId}_${itemId}`, userId, count]);
+            await client.hincrby([`user_item_${orderId}_${userId}`, itemId, count]);
         } else {
             return false;
         }
@@ -38,9 +43,16 @@ module.exports = {
     findCurrentOrderForUser: async (restaurantId, userId) => {
         return await client.hget(`current_order_${userId}`, restaurantId);
     },
-    addUpdateCurrentOrderForUser: async (restaurantId, userId, orderId) => {
+    addUpdateCurrentOrderForUser: async (restaurantId, userId, orderId, status=false) => {
         client.hset(`current_order_${userId}`, restaurantId, orderId);
         client.hset(`order_restaurant`, orderId, restaurantId);
+        client.hset(`order_status`, orderId, status)
+    },
+    getOrderStatus: async (orderId) => {
+        return JSON.parse(await client.hget(`order_status`, orderId));
+    },
+    setOrderAsCompleted: async (orderId) => {
+       await client.hset('order_status', orderId, true);
     },
     getRestaurantForOrderId: async (orderId) => {
         return await client.hget('order_restaurant', orderId);
@@ -48,6 +60,10 @@ module.exports = {
     getDetailOfItemInOrder: async (orderId, itemId) => {
         console.log(`order_${orderId}`);
         return parseInt(await client.hget(`order_${orderId}`, itemId))
+    },
+    getDetailOfUserItemInOrder: async (orderId, userId, itemId) => {
+        console.log(`user_item_${orderId}_${userId}`, itemId);
+        return parseInt(await client.hget(`user_item_${orderId}_${userId}`, itemId))
     },
     deleteItemHash: async () => {
         await client.del('items');
@@ -67,5 +83,8 @@ module.exports = {
     },
     getDetailOfItem: async (itemId) => {
         return JSON.parse(await client.hget('items', itemId))
+    },
+    getUserDetailForItemInOrder: async (orderId, userId) => {
+        return await client.hgetall([`user_item_${orderId}_${userId}`]);
     }
 };
