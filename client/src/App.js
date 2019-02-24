@@ -45,9 +45,6 @@ class App extends Component {
                 <div>
                   <span>Welcome, {name}</span>
                   <button onClick={this._handleLogout}>LOGOUT</button>
-                  <span>
-                    <Link to='/orders'>My Orders</Link>
-                  </span>
                 </div>
               </div>
 
