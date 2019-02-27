@@ -6,7 +6,17 @@
 * Node v8+
 
 
-##### Steps
+##### Steps - Docker-Compose
+
+To start the server 
+
+`sudo docker-compose up --build`
+
+To stop the server
+
+`sudo docker-compose down`
+
+##### Steps - Manual
 
 * Install Node dependencies
 
