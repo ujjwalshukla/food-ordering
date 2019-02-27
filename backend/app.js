@@ -12,6 +12,7 @@ var orders  = require('./routes/orders');
 const shareOrder = require('./routes/shareOrders');
 
 require('./helper/redis');
+require('./scripts/migrateDataToRedis');
 var app = express();
 // var cors = require('cors');
 

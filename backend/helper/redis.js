@@ -1,6 +1,6 @@
 const redis = require('async-redis');
-
-const client = redis.createClient();
+console.log(process.env.REDIS_URL)
+const client = redis.createClient(process.env.REDIS_URL);
 client.on('connect', () => {
     console.log('connected');
 });

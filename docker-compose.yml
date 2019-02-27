@@ -1,0 +1,38 @@
+version: '2'
+services:
+  server:
+    build:
+      context: ./backend/
+    command: npm start
+    ports:
+      - "3010:3010"
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - REDIS_URL=redis://cache
+    networks:
+      - redis-net
+  client:
+    build:
+      context: ./client/
+    command: npm start
+    depends_on:
+      - server
+    ports:
+      - "3000:3000"
+    networks:
+      - redis-net
+
+  redis:
+    image: redis:4.0.5-alpine
+    command: ["redis-server"]
+    hostname: redis
+    container_name: cache
+    networks:
+      - redis-net
+
+networks:
+  redis-net:
+
+volumes:
+  redis-data:
